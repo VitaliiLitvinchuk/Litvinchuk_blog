@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\BlogCategory as Model;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -61,7 +62,7 @@ class BlogCategoryRepository extends CoreRepository
      *
      * @param int|null $perPage
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator
      */
     public function getAllWithPaginate($perPage = null)
     {
