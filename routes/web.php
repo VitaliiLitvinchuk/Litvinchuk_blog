@@ -32,6 +32,8 @@ Route::group(['prefix' => 'digging_deeper'], function () {
         ->name('digging_deeper.prepareCatalog');
 });
 
+Route::get('api/blog/posts', [\App\Http\Controllers\Api\Blog\PostController::class, 'index']);
+
 Route::resource('rest', RestTestController::class)->names('restTest');
 
 
