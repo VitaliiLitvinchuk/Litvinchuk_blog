@@ -12,10 +12,12 @@ class CategoryController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = BlogCategory::with(['parentCategory'])->get();
-        return $categories;
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 100);
+
+        return BlogCategory::with(['parentCategory'])->paginate($perPage, ['*'], 'page', $page);
     }
 
     /**
@@ -31,7 +33,12 @@ class CategoryController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $result = BlogCategory::create($request->input());
+
+        if ($result)
+            return $result;
+
+        return http_response_code(400);
     }
 
     /**
@@ -39,7 +46,7 @@ class CategoryController extends BaseController
      */
     public function show(string $id)
     {
-        //
+        return BlogCategory::with(['parentCategory'])->find($id);
     }
 
     /**
@@ -55,7 +62,19 @@ class CategoryController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $item = BlogCategory::find($id);
+
+        if (empty($item))
+            return http_response_code(400);
+
+        $data = $request->all();
+
+        $result = $item->update($data);
+
+        if ($result)
+            return $result;
+
+        return http_response_code(400);
     }
 
     /**
@@ -63,6 +82,7 @@ class CategoryController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        BlogCategory::destroy($id);
+        return http_response_code(200);
     }
 }

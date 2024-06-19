@@ -30,8 +30,8 @@ class PostController extends BaseController
     {
         $page = $request->input('page', 1);
         $perPage = $request->input('per_page', 15);
-        $posts = BlogPost::with(['user', 'category'])->paginate($perPage, ['*'], 'page', $page);
-        return $posts;
+
+        return BlogPost::with(['user', 'category'])->paginate($perPage, ['*'], 'page', $page);
     }
 
     /**
@@ -47,7 +47,12 @@ class PostController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $result = BlogPost::create($request->input());
+
+        if ($result)
+            return $result;
+
+        return http_response_code(400);
     }
 
     /**
@@ -71,7 +76,19 @@ class PostController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $item = BlogPost::find($id);
+
+        if (empty($item))
+            return http_response_code(400);
+
+        $data = $request->all();
+
+        $result = $item->update($data);
+
+        if ($result)
+            return $result;
+
+        return http_response_code(400);
     }
 
     /**
@@ -79,6 +96,7 @@ class PostController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        BlogPost::destroy($id);
+        return http_response_code(200);
     }
 }
