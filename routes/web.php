@@ -33,9 +33,12 @@ Route::group(['prefix' => 'digging_deeper'], function () {
 });
 
 Route::get('api/blog/posts', [\App\Http\Controllers\Api\Blog\PostController::class, 'index']);
+Route::get('api/blog/post/{post}', [\App\Http\Controllers\Api\Blog\PostController::class, 'show']);
+
+Route::get('api/blog/categories', [\App\Http\Controllers\Api\Blog\CategoryController::class, 'index']);
+Route::get('api/blog/category/{category}', [\App\Http\Controllers\Api\Blog\CategoryController::class, 'show']);
 
 Route::resource('rest', RestTestController::class)->names('restTest');
-
 
 Route::group([ 'namespace' => 'App\Http\Controllers\Blog', 'prefix' => 'blog'], function () {
     Route::resource('posts', PostController::class)->names('blog.posts');
